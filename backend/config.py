@@ -11,6 +11,9 @@ class Config:
     # JWT configuration
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'dev-secret-key-change-in-production')
     JWT_ACCESS_TOKEN_EXPIRES = 86400  # 24 hours
+    JWT_TOKEN_LOCATION = ['headers']
+    JWT_HEADER_NAME = 'Authorization'
+    JWT_HEADER_TYPE = 'Bearer'
     
     # Flask configuration
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-change-in-production')
