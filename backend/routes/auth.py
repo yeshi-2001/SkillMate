@@ -1,11 +1,10 @@
 from flask import Blueprint, request
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
-from flask_bcrypt import Bcrypt
+from extensions import bcrypt
 from models import db, User
 from utils.helpers import success_response, error_response, validate_email_format, validate_required_fields
 
 auth_bp = Blueprint('auth', __name__)
-bcrypt = Bcrypt()
 
 # Token blacklist for logout functionality
 token_blacklist = set()
@@ -61,21 +60,34 @@ def register():
 def login():
     """Authenticate user and return JWT token"""
     data = request.get_json()
+    print(f"Login attempt for email: {data.get('email')}")
     
     # Validate required fields
     valid, error_msg = validate_required_fields(data, ['email', 'password'])
     if not valid:
+        print(f"Validation failed: {error_msg}")
         return error_response(error_msg, 400)
     
     # Find user by email
     user = User.query.filter_by(email=data['email']).first()
     
+    if not user:
+        print(f"User not found: {data['email']}")
+        return error_response("Invalid email or password", 401)
+    
+    print(f"User found: {user.email}, checking password...")
+    
     # Verify credentials
-    if not user or not bcrypt.check_password_hash(user.password, data['password']):
+    password_match = bcrypt.check_password_hash(user.password, data['password'])
+    print(f"Password match: {password_match}")
+    
+    if not password_match:
+        print("Password verification failed")
         return error_response("Invalid email or password", 401)
     
     # Generate JWT token
     access_token = create_access_token(identity=user.id)
+    print(f"Login successful for user: {user.email}")
     
     return success_response({
         "token": access_token,

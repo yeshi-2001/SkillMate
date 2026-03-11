@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask_bcrypt import Bcrypt
 from config import Config
 from models import db
+from extensions import bcrypt
 
 def create_app():
     """Application factory pattern for Flask app"""
@@ -12,9 +12,9 @@ def create_app():
     
     # Initialize extensions
     db.init_app(app)
+    bcrypt.init_app(app)
     CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
     jwt = JWTManager(app)
-    bcrypt = Bcrypt(app)
     
     # Import and register blueprints
     from routes.auth import auth_bp, token_blacklist
