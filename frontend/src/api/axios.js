@@ -9,6 +9,8 @@ const axiosInstance = axios.create({
   },
 });
 
+let isRedirecting = false;
+
 // Add JWT token to every request
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -27,9 +29,12 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 422) {
+    if ((error.response?.status === 401 || error.response?.status === 422) && !isRedirecting) {
+      isRedirecting = true;
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 100);
     }
     return Promise.reject(error);
   }

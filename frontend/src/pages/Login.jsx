@@ -29,11 +29,17 @@ const Login = () => {
     setLoading(true);
 
     try {
+      console.log('Attempting login...');
       const response = await axiosInstance.post('/login', formData);
+      console.log('Login response:', response.data);
       const { token, user } = response.data.data;
+      console.log('Token received:', token ? 'Yes' : 'No');
+      console.log('User data:', user);
       login(token, user);
+      console.log('Navigating to dashboard...');
       navigate('/dashboard');
     } catch (err) {
+      console.error('Login error:', err);
       setError(err.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);
