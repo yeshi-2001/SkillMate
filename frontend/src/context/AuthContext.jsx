@@ -14,16 +14,20 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [initialCheckDone, setInitialCheckDone] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log('AuthContext: Checking token on mount:', token ? 'Found' : 'Not found');
-    if (token) {
-      fetchUserProfile();
-    } else {
-      setLoading(false);
+    if (!initialCheckDone) {
+      const token = localStorage.getItem('token');
+      console.log('AuthContext: Checking token on mount:', token ? 'Found' : 'Not found');
+      if (token) {
+        fetchUserProfile();
+      } else {
+        setLoading(false);
+      }
+      setInitialCheckDone(true);
     }
-  }, []);
+  }, [initialCheckDone]);
 
   const fetchUserProfile = async () => {
     try {
@@ -46,6 +50,7 @@ export const AuthProvider = ({ children }) => {
     console.log('AuthContext: User data:', userData);
     localStorage.setItem('token', token);
     setUser(userData);
+    setLoading(false); // Ensure loading is false after login
   };
 
   const logout = async () => {

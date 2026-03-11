@@ -37,7 +37,10 @@ const Login = () => {
       console.log('User data:', user);
       login(token, user);
       console.log('Navigating to dashboard...');
-      navigate('/dashboard');
+      // Small delay to ensure state is updated
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 100);
     } catch (err) {
       console.error('Login error:', err);
       setError(err.response?.data?.message || 'Login failed');

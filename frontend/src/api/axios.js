@@ -29,12 +29,18 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if ((error.response?.status === 401 || error.response?.status === 422) && !isRedirecting) {
-      isRedirecting = true;
-      localStorage.removeItem('token');
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 100);
+    const status = error.response?.status;
+    // Only redirect on auth errors, not on login/register routes
+    if ((status === 401 || status === 422) && !isRedirecting) {
+      const url = error.config?.url || '';
+      // Don't redirect if we're already on login/register
+      if (!url.includes('/login') && !url.includes('/register')) {
+        isRedirecting = true;
+        localStorage.removeItem('token');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 100);
+      }
     }
     return Promise.reject(error);
   }
