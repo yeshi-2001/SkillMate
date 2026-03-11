@@ -36,12 +36,15 @@ const Skills = () => {
     }
 
     try {
-      await axiosInstance.post('/skills/add', formData);
+      const response = await axiosInstance.post('/skills/add', formData);
       setSuccess('Skill added successfully!');
       setFormData({ skill_name: '', type: 'teach' });
       fetchSkills();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to add skill');
+      console.error('Error adding skill:', err);
+      console.error('Error response:', err.response);
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to add skill';
+      setError(errorMsg);
     }
   };
 

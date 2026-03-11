@@ -12,7 +12,7 @@ def create_app():
     
     # Initialize extensions
     db.init_app(app)
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
     jwt = JWTManager(app)
     bcrypt = Bcrypt(app)
     
