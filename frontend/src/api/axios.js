@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE,
@@ -29,19 +29,8 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    const status = error.response?.status;
-    // Only redirect on auth errors, not on login/register routes
-    if ((status === 401 || status === 422) && !isRedirecting) {
-      const url = error.config?.url || '';
-      // Don't redirect if we're already on login/register
-      if (!url.includes('/login') && !url.includes('/register')) {
-        isRedirecting = true;
-        localStorage.removeItem('token');
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 100);
-      }
-    }
+    // DON'T auto-redirect - let components handle errors
+    // This prevents logout loops
     return Promise.reject(error);
   }
 );

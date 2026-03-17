@@ -10,11 +10,15 @@ users_bp = Blueprint('users', __name__)
 def get_profile():
     """Get logged-in user's profile information"""
     user_id = get_jwt_identity()
+    print(f"Profile request for user_id: {user_id}")
+    
     user = User.query.get(user_id)
     
     if not user:
+        print(f"User not found: {user_id}")
         return error_response("User not found", 404)
     
+    print(f"Profile found for: {user.email}")
     return success_response({
         "id": user.id,
         "name": user.name,

@@ -14,20 +14,17 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [initialCheckDone, setInitialCheckDone] = useState(false);
 
   useEffect(() => {
-    if (!initialCheckDone) {
-      const token = localStorage.getItem('token');
-      console.log('AuthContext: Checking token on mount:', token ? 'Found' : 'Not found');
-      if (token) {
-        fetchUserProfile();
-      } else {
-        setLoading(false);
-      }
-      setInitialCheckDone(true);
+    const token = localStorage.getItem('token');
+    console.log('AuthContext: Initial check - token exists:', !!token);
+    
+    if (token) {
+      fetchUserProfile();
+    } else {
+      setLoading(false);
     }
-  }, [initialCheckDone]);
+  }, []); // Empty dependency array - only run once
 
   const fetchUserProfile = async () => {
     try {
@@ -35,12 +32,17 @@ export const AuthProvider = ({ children }) => {
       const response = await axiosInstance.get('/user/profile');
       console.log('AuthContext: Profile fetched successfully:', response.data.data);
       setUser(response.data.data);
+      setLoading(false);
     } catch (error) {
       console.error('AuthContext: Failed to fetch user profile:', error);
-      console.error('AuthContext: Error response:', error.response);
-      // Don't remove token here, let axios interceptor handle it
-      setUser(null);
-    } finally {
+      
+      // Only clear token if it's actually invalid (401/422)
+      if (error.response?.status === 401 || error.response?.status === 422) {
+        console.log('AuthContext: Token invalid, clearing...');
+        localStorage.removeItem('token');
+        setUser(null);
+      }
+      // For other errors, keep the token and let user retry
       setLoading(false);
     }
   };
