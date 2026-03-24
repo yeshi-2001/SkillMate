@@ -4,50 +4,47 @@ import './Home.css';
 const Home = () => {
   return (
     <div className="home">
+      {/* Hero Section */}
       <section className="hero">
-        <div className="hero-content">
-          <h1>Exchange Skills, Not Money</h1>
-          <p>Connect with people who want to learn what you teach, and teach what you want to learn.</p>
-          <div className="hero-buttons">
-            <Link to="/register" className="btn-primary">Get Started</Link>
-            <Link to="/matches" className="btn-secondary">Explore Matches</Link>
+        <div className="hero-container">
+          <div className="hero-content">
+            <h1>Share Your Skills. Learn Something New.</h1>
+            <p>SkillShare connects learners and teachers in one place. Share your knowledge, discover new skills, and grow together in our supportive community.</p>
+            <div className="hero-buttons">
+              <Link to="/register" className="btn-primary">Get Started</Link>
+              <Link to="/matches" className="btn-secondary">Explore Skills</Link>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Features Section */}
       <section className="features">
-        <h2>How It Works</h2>
-        <div className="features-grid">
+        <div className="features-container">
           <div className="feature-card">
-            <div className="feature-icon">📚</div>
+            <div className="feature-icon share">🎓</div>
             <h3>Share Your Skills</h3>
-            <p>List the skills you can teach and what you want to learn</p>
+            <p>Teach what you know and inspire others to learn and grow in their journey.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">🤝</div>
+            <div className="feature-icon match">🤝</div>
             <h3>Find Matches</h3>
-            <p>Get matched with people who complement your skills</p>
+            <p>Connect with people who want to learn your skills or teach what you need.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">💬</div>
+            <div className="feature-icon connect">💬</div>
             <h3>Connect & Learn</h3>
-            <p>Chat, schedule sessions, and exchange knowledge</p>
+            <p>Collaborate, share knowledge, and build meaningful learning relationships.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">⭐</div>
+            <div className="feature-icon review">⭐</div>
             <h3>Rate & Review</h3>
-            <p>Build your reputation through ratings and reviews</p>
+            <p>Build trust and credibility through honest feedback and community reviews.</p>
           </div>
         </div>
-      </section>
-
-      <section className="cta">
-        <h2>Ready to Start Learning?</h2>
-        <p>Join thousands of learners exchanging skills every day</p>
-        <Link to="/register" className="btn-cta">Sign Up Now</Link>
       </section>
     </div>
   );

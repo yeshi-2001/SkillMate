@@ -1,0 +1,13 @@
+.notif-row {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.2s;
+}
+.notif-row:last-child { border-bottom: none; }
+.notif-row:hover { background: var(--surface2); }
+.notif-unread { background: rgba(200,134,10,0.05); }
+.notif-icon { font-size: 1.5rem; flex-shrink: 0; }
+.notif-content { flex: 1; }
+.notif-content p { margin-bottom: 0.2rem; }
+.notif-time { font-size: 0.8rem; color: var(--text-muted); }
+.notif-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }

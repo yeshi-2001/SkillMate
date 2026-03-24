@@ -15,8 +15,17 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          SkillMate
+          SkillShare
         </Link>
+        
+        {!isAuthenticated && (
+          <div className="navbar-center">
+            <Link to="#" className="navbar-link">Share Your Skills</Link>
+            <Link to="#" className="navbar-link">Find Matches</Link>
+            <Link to="#" className="navbar-link">Connect & Learn</Link>
+            <Link to="#" className="navbar-link">Rate & Review</Link>
+          </div>
+        )}
         
         <div className="navbar-menu">
           {isAuthenticated ? (
@@ -32,10 +41,10 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <>
-              <Link to="/login" className="navbar-btn">Login</Link>
+            <div className="navbar-buttons">
+              <Link to="/login" className="navbar-btn">Sign In</Link>
               <Link to="/register" className="navbar-btn primary">Sign Up</Link>
-            </>
+            </div>
           )}
         </div>
       </div>
